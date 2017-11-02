@@ -8,7 +8,7 @@
 #define OneHoudardMbps_cost 19
 #define OneGigaMbps_cost 4
 
-void dijkstra(int G[MAX][MAX],int n,int startnode)
+void dijkstra(int G[MAX][MAX],int n,int startnode, int endnode)
 {
  
     int cost[MAX][MAX],distance[MAX],pred[MAX];
@@ -20,7 +20,7 @@ void dijkstra(int G[MAX][MAX],int n,int startnode)
     for(i=0;i<n;i++)
         for(j=0;j<n;j++)
             if(G[i][j]==0)
-                cost[i][j]=INFINITY;
+                cost[i][j]=INT_MAX;
             else
                 cost[i][j]=G[i][j];
     
@@ -61,19 +61,22 @@ void dijkstra(int G[MAX][MAX],int n,int startnode)
     }
  
     //print the path and distance of each node
-    for(i=0;i<n;i++)
-        if(i!=startnode)
-        {
-            printf("\nDistance of node%d=%d",i+1,distance[i]);
-            printf("\nPath=%d",i+1);
+    //for(i=0;i<n;i++){
+        //if(i==endnode)
+        //{
+    printf("\nDistance of node%d=%d",endnode+1,distance[endnode]);
+    //printf("\nDistance from %d to %d is: %d", startnode+1, endnode+1, distance[endnode]);
+    printf("\nPath=%d",endnode+1);
             
-            j=i;
-            do
-            {
-                j=pred[j];
-                printf("<-%d",j+1);
-            }while(j!=startnode);
-    }
+    j=endnode;
+    do
+    {
+        j=pred[j];
+        printf("<-%d",j+1);
+    }while(j!=startnode);
+    printf("\n");
+        //}
+    //}
 }
 
 int link_cost_calculate(int link_capacity){
@@ -102,7 +105,7 @@ void initial_adjacency_matrix(int G[MAX][MAX]){
 
     for(i=0;i < MAX;i++){
         for(j=0;j < MAX;j++){
-            G[i][j] = INT_MAX;   
+            G[i][j] = 0;   
         }
     }
 }
@@ -111,6 +114,7 @@ int main()
 {
     int G[MAX][MAX],i,j,n,start_node, end_node;
     initial_adjacency_matrix(G);
+    printf("\n------------------------------------------Topology create------------------------------------------\n");
     printf("Enter no. of nodes:");
     scanf("%d",&n);
     
@@ -123,27 +127,55 @@ int main()
         while(printf("Node number(1~%d): ", n)){
 
             if(scanf("%d", &tmp) && tmp != 0){
-                printf("link capacity(10 - 10Mbps, 100 - 100Mpbs, 1000 - 1Gbps): ");
-                scanf("%d", &link_capacity);
-                G[i][tmp-1] = link_cost_calculate(link_capacity);
+                if(tmp == i+1){
+                    printf("No good input\n");
+                }else{
+                    printf("link capacity(10 - 10Mbps, 100 - 100Mpbs, 1000 - 1Gbps): ");
+                    scanf("%d", &link_capacity);
+                    G[i][tmp-1] = link_cost_calculate(link_capacity);
+                }
             }else{
                 break;
             }
         }
     }
 
-    /*printf("\nprint the adjacency matrix:\n");
+    printf("\nprint the adjacency matrix:\n");
     
-    for(i=0;i<n;i++)
-        for(j=0;j<n;j++)
-            printf("%d",G[i][j]);
-    */
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            printf("%d ",G[i][j]);
+        }
+        printf("\n");
+    }
     
-    printf("\nEnter flow's start node(1~%d): ", n);
-    scanf("%d", &start_node);
-    printf("\nEnter flow's end node(1~%d): ", n);
-    scanf("%d", &end_node);
-    dijkstra(G,n,start_node-1);
+    printf("\n------------------------------------------End of topology create------------------------------------------\n");
+    
+    
+    while(printf("\nEnter flow's start node(1~%d)(0 for terminate): ", n)){
+        if(scanf("%d", &start_node) && start_node != 0){
+            printf("Enter flow's end node(1~%d): ", n);
+            scanf("%d", &end_node);
+            dijkstra(G,n,start_node-1, end_node-1);
+        }else{
+            break;
+        }
+
+        printf("\nprint the adjacency matrix:\n");
+    
+        for(i=0;i<n;i++){
+            for(j=0;j<n;j++){
+                printf("%d ",G[i][j]);
+            }
+            printf("\n");
+        }
+    }
+
+    //printf("\nEnter flow's start node(1~%d): ", n);
+    //scanf("%d", &start_node);
+    //printf("Enter flow's end node(1~%d): ", n);
+    //scanf("%d", &end_node);
+    //dijkstra(G,n,start_node-1, end_node-1);
     
     return 0;
 }
