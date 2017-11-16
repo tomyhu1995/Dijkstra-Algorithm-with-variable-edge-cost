@@ -14,7 +14,7 @@
 #define OneGigaMbps_cost 4
 
 
-#define DEBUG
+//#define DEBUG
 
 /*
  * Usage: declare edges
@@ -35,6 +35,7 @@ typedef struct _R_
 	int path[MAX];
 	int number_of_count;
 	int min_capacity;//the minimum capacity on the route.
+	int route_age;
 }Route;
 
 /*Function definition*/

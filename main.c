@@ -64,6 +64,7 @@ int main(int argc, char const *argv[])
 
                 dijkstra(G, n, &(R[num_of_routes]));
                 Route_print(R[num_of_routes]);
+                R[num_of_routes].route_age = 1;
                 num_of_routes++;
             }else{
                 printf("!!!!!!!! No good input !!!!!!!!\n");
@@ -75,7 +76,6 @@ int main(int argc, char const *argv[])
 
 #ifdef DEBUG
         printf("\nprint the adjacency matrix:\n");
-    
         for(i=0;i<n;i++){
             for(j=0;j<n;j++){
                 printf("%d ",G[i][j].cost);
@@ -83,6 +83,11 @@ int main(int argc, char const *argv[])
             printf("\n");
         }
 #endif
+        printf("\n***** Other links *****\n");
+        for(i = 0; i < num_of_routes-1; i++){
+            dijkstra(G, n, &(R[i]));
+            Route_print(R[i]);
+        }
     }
     
     return 0;

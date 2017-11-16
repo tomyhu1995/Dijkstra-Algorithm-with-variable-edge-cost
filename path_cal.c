@@ -1,7 +1,7 @@
 #include "path_cal.h"
 
 void Route_print(Route R){
-    int i;
+    int i = 1;
 
     printf("----------------------------------\n");
     printf("Start node: %d\n", R.start_node);
@@ -9,8 +9,8 @@ void Route_print(Route R){
     printf("minimum link capacity: %d\n", R.min_capacity);
     printf("Hops: %d\n", R.number_of_count);
     printf("Path: %d", R.end_node);
-    for(i = 1; i < R.number_of_count; i++){
-        printf("<-%d", R.path[i]);
+    while(R.path[i]){
+        printf("<-%d", R.path[i++]);
     }
     printf("\n----------------------------------\n");
 }
@@ -101,8 +101,10 @@ void dijkstra(Edge_cost G[MAX][MAX],int n, Route *R)
     R->number_of_count = count - 2;
 
     for(i = 0; i < count - 1; i++){
-        G[R->path[i]-1][R->path[i+1]-1].cost += path_cost_addition();//add path cost
-        G[R->path[i+1]-1][R->path[i]-1].cost += path_cost_addition();//add path cost
+        if(R->route_age == 0){
+            G[R->path[i]-1][R->path[i+1]-1].cost += path_cost_addition();//add path cost
+            G[R->path[i+1]-1][R->path[i]-1].cost += path_cost_addition();//add path cost
+        }
 
         if(G[R->path[i]-1][R->path[i+1]-1].capacity <= R->min_capacity){
             R->min_capacity = G[R->path[i]-1][R->path[i+1]-1].capacity;
@@ -152,6 +154,7 @@ void initial_route_table(Route R[MAX]){
     int i,j;
 
     for(i = 0; i < MAX; i++){
+        R[i].route_age = 0;
         for(j = 0; j < MAX; j++){
             R[i].path[j] = 0;
         }
