@@ -7,9 +7,11 @@ CFLAGS =
 LIB = 
 
 INC = 
+INC += -I./
 
 SRC = 
 SRC += ./main
+SRC += ./path_cal
 
 SRC_FILES = ${addsuffix .c, ${SRC}}
 OBJ_FILES = ${addsuffix .o, ${SRC}}

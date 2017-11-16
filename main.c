@@ -3,12 +3,15 @@
 #include <limits.h>
 #include "path_cal.h"
 
- 
-int main()
+int main(int argc, char const *argv[])
 {
     Edge_cost G[MAX][MAX];
-    int i,j,n,start_node, end_node;
+    Route R[MAX];
+    int i,j,n,start_node, end_node, num_of_routes = 0;
+    
     initial_adjacency_matrix(G);
+    initial_route_table(R);
+
     printf("\n------------------------------------------Topology create------------------------------------------\n");
     printf("Enter no. of nodes:");
     scanf("%d",&n);
@@ -36,6 +39,7 @@ int main()
         }
     }
 
+#ifdef DEBUG
     printf("\nprint the adjacency matrix:\n");
     
     for(i=0;i<n;i++){
@@ -44,6 +48,7 @@ int main()
         }
         printf("\n");
     }
+#endif
     
     printf("\n------------------------------------------End of topology create------------------------------------------\n");
     
@@ -52,11 +57,23 @@ int main()
         if(scanf("%d", &start_node) && start_node != 0){
             printf("Enter flow's end node(1~%d): ", n);
             scanf("%d", &end_node);
-            dijkstra(G,n,start_node-1, end_node-1);
+
+            if(start_node >= 1 && start_node <= n && end_node >= 1 && end_node <= n && start_node != end_node){
+                R[num_of_routes].start_node = start_node;
+                R[num_of_routes].end_node = end_node;
+
+                dijkstra(G, n, &(R[num_of_routes]));
+                Route_print(R[num_of_routes]);
+                num_of_routes++;
+            }else{
+                printf("!!!!!!!! No good input !!!!!!!!\n");
+            }
+            
         }else{
             break;
         }
 
+#ifdef DEBUG
         printf("\nprint the adjacency matrix:\n");
     
         for(i=0;i<n;i++){
@@ -65,13 +82,8 @@ int main()
             }
             printf("\n");
         }
+#endif
     }
-
-    //printf("\nEnter flow's start node(1~%d): ", n);
-    //scanf("%d", &start_node);
-    //printf("Enter flow's end node(1~%d): ", n);
-    //scanf("%d", &end_node);
-    //dijkstra(G,n,start_node-1, end_node-1);
     
     return 0;
 }
