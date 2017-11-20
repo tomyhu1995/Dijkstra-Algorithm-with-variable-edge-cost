@@ -3,6 +3,8 @@
 #include <limits.h>
 #include "path_cal.h"
 
+//#define DEBUG_AJ_MATRIX
+
 int main(int argc, char const *argv[])
 {
     Edge_cost G[MAX][MAX];
@@ -74,7 +76,7 @@ int main(int argc, char const *argv[])
             break;
         }
 
-#ifdef DEBUG
+#ifdef DEBUG_AJ_MATRIX
         printf("\nprint the adjacency matrix:\n");
         for(i=0;i<n;i++){
             for(j=0;j<n;j++){
