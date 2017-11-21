@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
     initial_route_table(R);
 
     printf("\n------------------------------------------Topology create------------------------------------------\n");
-    printf("Enter no. of nodes:");
+    printf("Enter no. of nodes: ");
     scanf("%d",&n);
     
 
@@ -71,7 +71,7 @@ int main(int argc, char const *argv[])
                 R[num_of_routes].end_node = end_node;
 
                 dijkstra(G, n, &(R[num_of_routes]));
-                Route_print(R[num_of_routes]);
+                Route_print(R[num_of_routes], num_of_routes);
                 R[num_of_routes].route_age = 1;
 
                 if(R[num_of_routes].min_capacity >= R[num_of_routes].target_capacity){
@@ -101,7 +101,7 @@ int main(int argc, char const *argv[])
             for(i = 0; i < num_of_routes-1; i++){
                 int old_min_capacity = R[i].min_capacity;
                 dijkstra(G, n, &(R[i]));
-                Route_print(R[i]);
+                Route_print(R[i], i);
 
                 if(R[i].min_capacity >= R[i].target_capacity){
                     if(old_min_capacity < R[i].target_capacity){

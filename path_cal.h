@@ -44,12 +44,12 @@ typedef struct _R_
 /*
  * Print routing informations
  */
-void Route_print(Route R);
+void Route_print(Route R, int serial_number);
 
 /*
  * calculate how many cost should be added.
  */
-int path_cost_addition(void);
+int path_cost_addition(int target_capacity);
 
 /*
  * routing table calculation

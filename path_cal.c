@@ -1,9 +1,10 @@
 #include "path_cal.h"
 
-void Route_print(Route R){
+void Route_print(Route R, int serial_number){
     int i = 1;
 
     printf("----------------------------------\n");
+    printf("Route serial number: %d\n", serial_number);
     printf("Start node: %d\n", R.start_node);
     printf("End node: %d\n", R.end_node);
     printf("minimum link capacity: %d\n", R.min_capacity);
@@ -15,8 +16,21 @@ void Route_print(Route R){
     printf("\n----------------------------------\n");
 }
 
-int path_cost_addition(void){
-    return 1;
+int path_cost_addition(int target_capacity){
+    switch(target_capacity){
+        case 10:    
+            return 1;
+            break;
+        case 100:
+            return 10;
+            break;
+        case 1000:
+            return 100;
+            break;
+        default:
+            return 1;
+            break;
+    }
 }
 
 void dijkstra(Edge_cost G[MAX][MAX],int n, Route *R)
@@ -102,8 +116,8 @@ void dijkstra(Edge_cost G[MAX][MAX],int n, Route *R)
 
     for(i = 0; i < count - 1; i++){
         if(R->route_age == 0){
-            G[R->path[i]-1][R->path[i+1]-1].cost += path_cost_addition();//add path cost
-            G[R->path[i+1]-1][R->path[i]-1].cost += path_cost_addition();//add path cost
+            G[R->path[i]-1][R->path[i+1]-1].cost += path_cost_addition(R->target_capacity);//add path cost
+            G[R->path[i+1]-1][R->path[i]-1].cost += path_cost_addition(R->target_capacity);//add path cost
         }
 
         if(G[R->path[i]-1][R->path[i+1]-1].capacity <= R->min_capacity){
