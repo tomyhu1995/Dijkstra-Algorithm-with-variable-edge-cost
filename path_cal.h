@@ -35,7 +35,8 @@ typedef struct _R_
 	int path[MAX];
 	int number_of_count;
 	int min_capacity;//the minimum capacity on the route.
-	int route_age;
+	int route_age;//to store the route is old or new.
+	int target_capacity;//user wanted capacicy.
 }Route;
 
 /*Function definition*/

@@ -10,6 +10,8 @@ int main(int argc, char const *argv[])
     Edge_cost G[MAX][MAX];
     Route R[MAX];
     int i,j,n,start_node, end_node, num_of_routes = 0;
+    int num_of_match_target = 0;//how many route match there target capacity.
+    int input_min_capacity;
     
     initial_adjacency_matrix(G);
     initial_route_table(R);
@@ -31,7 +33,9 @@ int main(int argc, char const *argv[])
                     printf("No good input\n");
                 }else{
                     printf("link capacity(10 - 10Mbps, 100 - 100Mpbs, 1000 - 1Gbps): ");
-                    scanf("%d", &link_capacity);
+                    while(scanf("%d", &link_capacity) && link_capacity != 10 && link_capacity != 100 && link_capacity != 1000){
+                        printf("No good input, please type in : 10 - 10Mbps, 100 - 100Mpbs, 1000 - 1Gbps: ");
+                    }
                     G[i][tmp-1].cost = link_cost_calculate(link_capacity);
                     G[i][tmp-1].capacity = link_capacity;
                 }
@@ -61,12 +65,19 @@ int main(int argc, char const *argv[])
             scanf("%d", &end_node);
 
             if(start_node >= 1 && start_node <= n && end_node >= 1 && end_node <= n && start_node != end_node){
+                printf("Please Enter your capacity demand: ");
+                scanf("%d", &(R[num_of_routes].target_capacity));
                 R[num_of_routes].start_node = start_node;
                 R[num_of_routes].end_node = end_node;
 
                 dijkstra(G, n, &(R[num_of_routes]));
                 Route_print(R[num_of_routes]);
                 R[num_of_routes].route_age = 1;
+
+                if(R[num_of_routes].min_capacity >= R[num_of_routes].target_capacity){
+                    num_of_match_target++;
+                }
+
                 num_of_routes++;
             }else{
                 printf("!!!!!!!! No good input !!!!!!!!\n");
@@ -85,12 +96,30 @@ int main(int argc, char const *argv[])
             printf("\n");
         }
 #endif
-        printf("\n***** Other links *****\n");
-        for(i = 0; i < num_of_routes-1; i++){
-            dijkstra(G, n, &(R[i]));
-            Route_print(R[i]);
+        if(num_of_routes > 1){
+            printf("\n***** Other links *****\n");
+            for(i = 0; i < num_of_routes-1; i++){
+                int old_min_capacity = R[i].min_capacity;
+                dijkstra(G, n, &(R[i]));
+                Route_print(R[i]);
+
+                if(R[i].min_capacity >= R[i].target_capacity){
+                    if(old_min_capacity < R[i].target_capacity){
+                        num_of_match_target++;
+                    }else{
+                        //do nothing because already match the target.
+                    }
+                }else{
+                    if(old_min_capacity >= R[i].target_capacity){
+                        num_of_match_target--;
+                    }
+                }
+
+            }
         }
     }
+
+    printf("Satisfaction index: %f\n", (float)num_of_match_target/num_of_routes);
     
     return 0;
 }
