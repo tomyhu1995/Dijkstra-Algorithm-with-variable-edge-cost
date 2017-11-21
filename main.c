@@ -32,7 +32,7 @@ int main(int argc, char const *argv[])
                 if(tmp == i+1){
                     printf("No good input\n");
                 }else{
-                    printf("link capacity(10 - 10Mbps, 100 - 100Mpbs, 1000 - 1Gbps): ");
+                    printf("link capacity(10 - 10Mbps, 100 - 100Mbps, 1000 - 1Gbps): ");
                     while(scanf("%d", &link_capacity) && link_capacity != 10 && link_capacity != 100 && link_capacity != 1000){
                         printf("No good input, please type in : 10 - 10Mbps, 100 - 100Mpbs, 1000 - 1Gbps: ");
                     }

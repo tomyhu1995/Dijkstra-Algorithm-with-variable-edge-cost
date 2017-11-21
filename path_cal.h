@@ -9,9 +9,9 @@
 #define INFINITY 9999
 #define MAX 10
 
-#define TenMbps_cost 25
-#define OneHoudardMbps_cost 19
-#define OneGigaMbps_cost 4
+#define TenMbps_cost 100
+#define OneHoudardMbps_cost 10
+#define OneGigaMbps_cost 1
 
 
 //#define DEBUG
